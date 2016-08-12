@@ -1,0 +1,1 @@
+这是我学习python cookbook 时的笔记,记录下来 方便自己温故知新   by oldman
