@@ -37,10 +37,10 @@ def decor2(parm):
     """
 
     def _decor2(func):  # func为被装饰的函数
-        @wraps(func)
+        @wraps(func)  # wraps 装饰器会把func的元数据带过来
         def wrapper(*args, **kwargs):
             if parm:
-                func(*args)
+                func(*args, **kwargs)
                 print('I am true')
             else:
                 print('sorry, false')
@@ -50,12 +50,10 @@ def decor2(parm):
     return _decor2
 
 
-@decor2(True) # 这里装饰器的参数为True
+@decor2(True)  # 这里装饰器的参数为True
 def add1(x, y):
     print('result is {}'.format(x + y))
 
 
 if __name__ == '__main__':
     add1(2, 3)
-
-
