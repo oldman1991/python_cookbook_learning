@@ -15,7 +15,7 @@ class Person:
     # Setter function
     @first_name.setter
     def first_name(self, value):
-        if not  isinstance(value,str):
+        if not isinstance(value, str):
             raise TypeError('Excepted a string')
         self.first_name = value
 
@@ -24,6 +24,7 @@ class Person:
     def first_name(self):
         raise AttributeError("Can't delete attribute")
 
+
 """
 三个函数的名字必须一样
 第一个方法是一个getter 它使得first_name 成为一个属性,其他两个方法给fist_name属性添加了setter和deleter函数
@@ -31,3 +32,8 @@ class Person:
 """
 print(Person.__dict__)
 print(dir(Person))
+p = Person([123, 456])  #会抛出异常的 ,自动调用 setter方法
+
+"""
+property还是一种动态计算attribute额方法 不做细说
+"""
