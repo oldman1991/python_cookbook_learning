@@ -13,11 +13,12 @@ class LazyConnection:
         self.type = type
         self.sock = None
 
+
+class B(A):
     def __enter__(self):
         if self.sock is not None:
             raise RuntimeError('Already connected')
         self.sock = socket(self.family, self.type)
-        self.sock.connect(self.address)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.sock.close()
@@ -28,6 +29,9 @@ class LazyConnection:
 这个类的核心功能就是表示一条网络连接,但是实际上在初始状态下它并不会做任何事情(比如,他并不会建立一条连接).相反,网络连接是通过with语句
 来建立和关闭的(这正是上下问管理的基本要求).示例如下:
 """
+
+# if 1 == 1:
+#    print("人生苦短，我用python")
 
 if __name__ == "__main__":
     conn = LazyConnection(('wwww.python.org', 80))

@@ -47,3 +47,55 @@ class Point:
 p = Point(2, 3)
 print(p.x)  # calls Point.x.__get__(p,Points)
 p.y = 5  # Calls Point.y.__set__(p,5)
+"""
+描述符常常回座位一个组件出现在大型的编程框架中,其中还会涉及装饰器或者元类.正因为如此,对描述符的使用可能隐藏得很深,几乎看不到痕迹
+例如,下面是一些更加高级的基于描述符的代码,其中还用到了类装饰器
+"""
+
+
+class Typed:
+    def __init__(self, name, expected_type):
+        self.name = name
+        self.expected_type = expected_type
+
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        return instance.__dict__[self.name]
+
+    def __set__(self, instance, value):
+        if not isinstance(value, self.expected_type):
+            raise TypeError('Expected ' + str(self.expected_type))
+        instance.__dict__[self.name] = value
+
+    def __delete__(self, instance):
+        del instance.__dict__[self.name]
+
+
+# Class decorator that applies it to selected attributes
+
+def typeassert(**kwargs):
+    def decorate(cls):
+        for name, expected_type in kwargs.items():
+            setattr(cls, name, Typed(name, expected_type))
+        return cls
+
+    return decorate
+
+
+# Example use
+
+@typeassert(name=str, shares=int, price=float)
+class Stock:
+    def __init__(self, name,shares, price):
+        self.name = name
+        self.shares = shares
+        self.price = price
+
+print(Stock.__dict__)
+
+"""
+最后应该强调的是,如果只是想访问某个特定的 类中的一种属性,并对此做定制化的处理,那么最好不要编写描述符来实现.对于这个
+任务,用property属性方法来完成会更加简单.在需要大量重用代码的情况下,描述符会更加有用(例如,我们希望在自己的代码中大量使用
+描述符提供的功能,或者将其作为库来使用)
+"""
