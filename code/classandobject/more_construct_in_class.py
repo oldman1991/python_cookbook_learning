@@ -45,3 +45,4 @@ c = Date.today()  # 创建一个Date的实例(cls=Date)
 d = NewDate.today()  # create an instance of NewDate (cl=NewDate)
 print(c)
 print(d)
+
