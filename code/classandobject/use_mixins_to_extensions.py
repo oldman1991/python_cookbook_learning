@@ -22,7 +22,7 @@ class LoggedMappingMixin:
 
     def __getitem__(self, item):
         print('Getting ' + str(item))
-        return setattr().__getitem__(item)
+        return super().__getitem__(item)
 
     def __setitem__(self, key, value):
         print('Setting {} = {!r}'.format(key, value))
@@ -33,3 +33,55 @@ class LoggedMappingMixin:
         return super().__delitem__(key)
 
 
+class SetOnceMappingMixin:
+    """
+    Only allow a key to be set once
+    """
+    __slots__ = ()
+
+    def __setitem__(self, key, value):
+        if key in self:
+            raise KeyError(str(key) + "already set")
+        return super().__setitem__(key, value)
+
+
+class StringKeysManppingMixin():
+    """
+    Restrict keys to string only
+    """
+    __slots__ = ()
+
+    def __setitem__(self, key, value):
+        if not isinstance(key, str):
+            raise TypeError('keys must be strings')
+        return super().__setitem__(key, value)
+
+
+# a = StringKeysManppingMixin()
+# a['11']=11
+# print(a['11'])  # 注：object对象是没有__setitem__方法的，所以这里会报错
+# print(a)
+"""
+这些类单独使用起来没有任何的意义，事实上如果你去实例化任何一个类，除了
+产生异常外没任何作用。他们是通过多继承和其他映射对象混入使用的，例如：
+"""
+
+
+class LoggedDict(LoggedMappingMixin, dict):
+    pass
+
+
+d = LoggedDict()
+d['x'] = 23
+print(d['x'])
+del d['x']
+
+from collections import defaultdict
+
+
+class SetOnceDefaultDict(SetOnceMappingMixin, defaultdict):
+    pass
+
+
+d = SetOnceMappingMixin(list)
+d['x']
