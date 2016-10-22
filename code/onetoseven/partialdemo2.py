@@ -117,5 +117,6 @@ def handler(result, seq):
     seq.sequence += 1
     print('[{}] Got: {}'.format(seq.sequence, result))
 
+
 seq = SequenceNo()
-apply_async(add,(2,3),callback=partial(handler,seq=seq)) # partial的具体用法详见7.8 当partial()方法中传入的参数不是按位置来传入的时间要指定参数名
+apply_async(add, (2, 3), callback=partial(handler, seq=seq))  # partial的具体用法详见7.8 当partial()方法中传入的参数不是按位置来传入的时间要指定参数名
