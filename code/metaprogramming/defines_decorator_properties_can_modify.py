@@ -44,13 +44,17 @@ def logged(level, name=None, message=None):
         def set_message(newmsg):
             nonlocal logmessage
             logmessage = newmsg
+
         return wrapper
+
     return decorate
+
 
 # Exmple use
 @logged(logging.DEBUG)
-def add(x,y):
-    return x+y
+def add(x, y):
+    return x + y
+
 
 @logged(logging.CRITICAL, 'example')
 def spam():
